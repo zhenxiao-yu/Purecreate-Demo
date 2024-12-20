@@ -26,6 +26,7 @@ const Shirt = () => {
         material-roughness={1}
         dispose={null}
       >
+        {/* T-shirt full texture */}
         {snap.isFullTexture && (
           <Decal 
             position={[0, 0, 0]}
@@ -35,15 +36,14 @@ const Shirt = () => {
           />
         )}
 
+        {/* T-shirt logo */}
         {snap.isLogoTexture && (
           <Decal 
             position={[0, 0.04, 0.15]}
             rotation={[0, 0, 0]}
             scale={0.15}
             map={logoTexture}
-            map-anisotropy={16}
-            depthTest={false}
-            depthWrite={true}
+            {...{ mapAnisotropy: 16, depthTest: false, depthWrite: true }}
           />
         )}
       </mesh>
@@ -51,4 +51,11 @@ const Shirt = () => {
   )
 }
 
-export default Shirt
+export default Shirt;
+
+/* The properties mapAnisotropy, depthTest, and depthWrite were not recognized in the first version of the code because they were not defined as valid props for the Decal component.
+
+In React, components can only receive and recognize props that are explicitly defined and expected by the component. When you pass a prop to a component that is not recognized or expected, React will ignore that prop and it will not have any effect on the component. 
+
+By using the spread syntax in the second version, these properties are properly spread onto the Decal component, allowing it to receive and utilize the additional properties correctly.
+*/
