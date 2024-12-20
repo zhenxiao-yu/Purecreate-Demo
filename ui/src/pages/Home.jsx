@@ -23,7 +23,7 @@ const Home = () => {
 							target="_blank"
 						>
 							<img
-								src="./apple-touch-icon.png"
+								src="./avatar.png"
 								alt="logo"
 								className="w-12 h-12 object-contain"
 							/>
