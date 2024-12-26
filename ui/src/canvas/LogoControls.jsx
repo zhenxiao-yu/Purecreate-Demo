@@ -22,134 +22,64 @@ const LogoControls = () => {
     }
   };
 
-  return (
-    <div className="absolute left-full ml-3">
-      <div className="flex flex-col space-y-2">
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">FX:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('front', 0, snap.frontLogoPosition[0] - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('front', 0, snap.frontLogoPosition[0] + 0.01)}
-          >
-            +
-          </button>
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">FY:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('front', 1, snap.frontLogoPosition[1] - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('front', 1, snap.frontLogoPosition[1] + 0.01)}
-          >
-            +
-          </button>
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">FZ:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('front', 2, snap.frontLogoPosition[2] - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('front', 2, snap.frontLogoPosition[2] + 0.01)}
-          >
-            +
-          </button>
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">FS:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handleScaleChange('front', snap.frontLogoScale - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handleScaleChange('front', snap.frontLogoScale + 0.01)}
-          >
-            +
-          </button>
-        </div>
+  // Helper function to create control elements with better label clarity and fixed width for labels
+  const renderControl = (label, type, index, currentValue) => (
+      <div className="flex items-center space-x-2">
+        <span className="text-gray-700 w-28">{label}</span>
+        <button
+            className="border border-gray-300 rounded p-1 w-8 text-xs hover:bg-gray-100"
+            onClick={() => handlePositionChange(type, index, currentValue - 0.01)}
+        >
+          -
+        </button>
+        <span className="text-gray-700 text-xs w-12 text-center">{100 * currentValue.toFixed(2)}%</span> {/* Display current value */}
+        <button
+            className="border border-gray-300 rounded p-1 w-8 text-xs hover:bg-gray-100"
+            onClick={() => handlePositionChange(type, index, currentValue + 0.01)}
+        >
+          +
+        </button>
       </div>
+  );
 
-      <div className="flex flex-col space-y-2 mt-4">
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">BX:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('back', 0, snap.backLogoPosition[0] - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('back', 0, snap.backLogoPosition[0] + 0.01)}
-          >
-            +
-          </button>
+  // Helper function for scale controls with clearer labels and fixed width for labels
+  const renderScaleControl = (label, type, currentValue) => (
+      <div className="flex items-center space-x-2">
+        <span className="text-gray-700 w-28">{label}</span>
+        <button
+            className="border border-gray-300 rounded p-1 w-8 text-xs hover:bg-gray-100"
+            onClick={() => handleScaleChange(type, currentValue - 0.01)}
+        >
+          -
+        </button>
+        <span className="text-gray-700 text-xs w-12 text-center">{100 * currentValue.toFixed(2)}%</span> {/* Display current value */}
+        <button
+            className="border border-gray-300 rounded p-1 w-8 text-xs hover:bg-gray-100"
+            onClick={() => handleScaleChange(type, currentValue + 0.01)}
+        >
+          +
+        </button>
+      </div>
+  );
+
+  return (
+      <div className="absolute left-full ml-3 bg-white shadow-lg rounded-lg p-4 w-80 max-h-[80vh] overflow-y-auto">
+        <h2 className="text-lg font-semibold mb-3">Front Logo Controls</h2>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          {renderControl('Position X', 'front', 0, snap.frontLogoPosition[0])}
+          {renderControl('Position Y', 'front', 1, snap.frontLogoPosition[1])}
+          {renderControl('Position Z', 'front', 2, snap.frontLogoPosition[2])}
+          {renderScaleControl('Scale', 'front', snap.frontLogoScale)}
         </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">BY:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('back', 1, snap.backLogoPosition[1] - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('back', 1, snap.backLogoPosition[1] + 0.01)}
-          >
-            +
-          </button>
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">BZ:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('back', 2, snap.backLogoPosition[2] - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handlePositionChange('back', 2, snap.backLogoPosition[2] + 0.01)}
-          >
-            +
-          </button>
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-gray-700">BS:</span>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handleScaleChange('back', snap.backLogoScale - 0.01)}
-          >
-            -
-          </button>
-          <button
-            className="border border-gray-300 rounded-md p-2"
-            onClick={() => handleScaleChange('back', snap.backLogoScale + 0.01)}
-          >
-            +
-          </button>
+
+        <h2 className="text-lg font-semibold mb-3">Back Logo Controls</h2>
+        <div className="grid grid-cols-2 gap-4">
+          {renderControl('Position X', 'back', 0, snap.backLogoPosition[0])}
+          {renderControl('Position Y', 'back', 1, snap.backLogoPosition[1])}
+          {renderControl('Position Z', 'back', 2, snap.backLogoPosition[2])}
+          {renderScaleControl('Scale', 'back', snap.backLogoScale)}
         </div>
       </div>
-    </div>
   );
 };
 
