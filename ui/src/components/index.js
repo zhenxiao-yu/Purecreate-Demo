@@ -1,13 +1,13 @@
 import CustomButton from "./CustomButton";
-import AiPicker from "./AiPicker";
-import ColorPicker from "./ColorPicker"; 
+import ColorPicker from "./ColorPicker";
 import FilePicker from "./FilePicker";
 import Tab from "./Tab";
+import TextureLogoPicker from "./TextureLogoPicker";
 
 export { 
-    CustomButton, 
-    AiPicker, 
-    ColorPicker, 
-    FilePicker, 
-    Tab
+  CustomButton,
+  ColorPicker,
+  FilePicker,
+  Tab,
+  TextureLogoPicker,
 };

@@ -9,7 +9,7 @@ function App() {
       <Canvas />
       <Customizer />
     </main>
-  );
+  )
 }
 
-export default App;
+export default App

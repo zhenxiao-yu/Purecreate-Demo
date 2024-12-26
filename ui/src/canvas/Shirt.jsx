@@ -1,61 +1,102 @@
 import React from 'react'
+import * as THREE from 'three';
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
-import { useFrame } from '@react-three/fiber';
-import { Decal, useGLTF, useTexture } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
+import { Decal, useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 
 import state from '../store';
 
 const Shirt = () => {
   const snap = useSnapshot(state);
-  const { nodes, materials } = useGLTF('/shirt_baked.glb');
+  const { nodes, materials } = useGLTF('/shirt.glb');
 
-  const logoTexture = useTexture(snap.logoDecal);
+  const logoTexture = useTexture(snap.frontLogoDecal);
   const fullTexture = useTexture(snap.fullDecal);
+  const backLogoTexture = useTexture(snap.backLogoDecal);
 
   useFrame((state, delta) => easing.dampC(materials.lambert1.color, snap.color, 0.25, delta));
 
   const stateString = JSON.stringify(snap);
 
-  return (
-    <group key={stateString}>
-      <mesh
-        castShadow
-        geometry={nodes.T_Shirt_male.geometry}
-        material={materials.lambert1}
-        material-roughness={1}
-        dispose={null}
-      >
-        {/* T-shirt full texture */}
-        {snap.isFullTexture && (
-          <Decal 
-            position={[0, 0, 0]}
-            rotation={[0, 0, 0]}
-            scale={1}
-            map={fullTexture}
-          />
-        )}
+  const createTextTexture = (text, font, size, color) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.font = `${size}px ${font}`;
+    const textWidth = ctx.measureText(text).width;
+    canvas.width = textWidth;
+    canvas.height = size;
+    ctx.fillStyle = color;
+    ctx.font = `${size}px ${font}`;
+    ctx.fillText(text, 0, size);
+    return new THREE.CanvasTexture(canvas);
+  }
 
-        {/* T-shirt logo */}
-        {snap.isLogoTexture && (
-          <Decal 
-            position={[0, 0.04, 0.15]}
-            rotation={[0, 0, 0]}
-            scale={0.15}
-            map={logoTexture}
-            {...{ mapAnisotropy: 16, depthTest: false, depthWrite: true }}
+  return (
+    <>
+      <OrbitControls />
+      <group key={stateString}>
+        <mesh
+          geometry={nodes.T_Shirt_male.geometry}
+          material={materials.lambert1}
+          // material-roughness={0}
+          material-metalness={0.1}
+          dispose={null}
+        >
+          {snap.isFullTexture && (
+            <Decal
+              position={[0, 0, 0]}
+              rotation={[0, 0, 0]}
+              scale={1}
+              map={fullTexture}
+              depthTest={false}
+              depthWrite={true}
+            />
+          )}
+
+          {snap.isFrontLogoTexture && (
+              <Decal
+                position={snap.frontLogoPosition}
+                rotation={[0, 0, 0]}
+                scale={snap.frontLogoScale}
+                map={logoTexture}
+                map-anisotropy={16}
+                depthTest={false}
+                depthWrite={true}
+              />
+          )}
+          {snap.isFrontText && (
+          <Decal
+            position={snap.frontTextPosition}
+            rotation={snap.frontTextRotation}
+            scale={snap.frontTextScale}
+            map={createTextTexture(snap.frontText, snap.frontTextFont, snap.frontTextSize, snap.frontTextColor)}
           />
-        )}
-      </mesh>
-    </group>
-  )
+          )}
+
+          {snap.isBackLogoTexture && (
+            <Decal
+              position={snap.backLogoPosition}
+              rotation={snap.backLogoRotation}
+              scale={snap.backLogoScale}
+              map={backLogoTexture}
+              map-anisotropy={16}
+              depthTest={false}
+              depthWrite={true}
+            />
+          )}
+          {snap.isBackText && (
+            <Decal
+              position={snap.backTextPosition}
+              rotation={snap.backTextRotation}
+              scale={snap.backTextScale}
+              map={createTextTexture(snap.backText, snap.backTextFont, snap.backTextSize, snap.backTextColor)}
+            />
+          )}
+        </mesh>
+      </group>
+    </>
+  );
 }
 
-export default Shirt;
-
-/* The properties mapAnisotropy, depthTest, and depthWrite were not recognized in the first version of the code because they were not defined as valid props for the Decal component.
-
-In React, components can only receive and recognize props that are explicitly defined and expected by the component. When you pass a prop to a component that is not recognized or expected, React will ignore that prop and it will not have any effect on the component. 
-
-By using the spread syntax in the second version, these properties are properly spread onto the Decal component, allowing it to receive and utilize the additional properties correctly.
-*/
+export default Shirt
