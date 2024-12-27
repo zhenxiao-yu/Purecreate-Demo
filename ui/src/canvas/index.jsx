@@ -35,27 +35,6 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Six Degrees of Freedom Controls for enhanced camera interaction
-const SixDoFControls = () => {
-  const { camera } = useThree();
-  const translationSpeed = 0.2; // Speed for camera movement
-  const rotationSpeed = 0.01; // Speed for camera rotation
-
-  // Keyboard controls for moving and rotating the camera
-  const handleKeyDown = useCallback(
-      (event) => handleKeyControls(event, camera, translationSpeed, rotationSpeed),
-      [camera, translationSpeed, rotationSpeed]
-  );
-
-  // Attach and detach keydown event listener
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
-
-  return null; // No visible UI component
-};
-
 // Main Canvas component to render the 3D model
 const CanvasModel = () => {
   const [fov, setFov] = useState(25); // Field of View for the camera
@@ -108,9 +87,6 @@ const CanvasModel = () => {
               maxPolarAngle={Math.PI / 2}
               minPolarAngle={0}
           />
-
-          {/* Custom camera controls */}
-          <SixDoFControls />
 
           {/* Custom camera rig for model interaction */}
           <CameraRig>

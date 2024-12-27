@@ -87,8 +87,14 @@ const FilePicker = ({ file, setFile, readFile }) => {
             <div className="flex w-full justify-center gap-4">
                 <CustomButton
                     type="outline"
-                    title="Logo"
-                    handleClick={() => readFile('logo')}
+                    title="Front"
+                    handleClick={() => readFile('frontLogo')}
+                    customStyles="w-40 h-12 sm:w-48 sm:h-14 text-sm sm:text-base border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white rounded-lg transition transform hover:scale-105 duration-300"
+                />
+                <CustomButton
+                    type="outline"
+                    title="Back"
+                    handleClick={() => readFile('backLogo')}
                     customStyles="w-40 h-12 sm:w-48 sm:h-14 text-sm sm:text-base border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white rounded-lg transition transform hover:scale-105 duration-300"
                 />
                 <CustomButton
