@@ -7,6 +7,53 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg-color: #000;
+  --text-color: #fff;
+  --border-color: #fff;
+  --hover-bg-color: #1a1a1a;
+  --focus-bg-color: #333;
+  --focus-border-color: #fff;
+  --placeholder-color: #aaa;
+  --transition-speed: 0.3s;
+}
+
+input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 15px;
+  font-size: 12px;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  outline: none;
+  transition: background-color var(--transition-speed),
+  border-color var(--transition-speed),
+  transform var(--transition-speed);
+}
+
+input::placeholder {
+  color: var(--placeholder-color);
+  transition: color var(--transition-speed);
+}
+
+input:hover {
+  background-color: var(--hover-bg-color);
+  transform: scale(1.02);
+}
+
+input:focus {
+  background-color: var(--focus-bg-color);
+  border-color: var(--focus-border-color);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+input:focus::placeholder {
+  color: var(--text-color);
+}
+
 /* Global Styles */
 html {
   font-family: "Inter", sans-serif;
@@ -91,9 +138,9 @@ input[type="file"] {
 
 /* Sketch Picker Customizations */
 .sketch-picker {
-  @apply w-[170px] glassmorphism rounded-md !important;
+  @apply w-[170px] glassmorphism rounded-md m-5 !important;
 }
 
-.sketch-picker > div:nth-child(3) {
-  @apply hidden !important;
-}
+/*.sketch-picker > div:nth-child(3) {*/
+/*  @apply hidden !important;*/
+/*}*/
