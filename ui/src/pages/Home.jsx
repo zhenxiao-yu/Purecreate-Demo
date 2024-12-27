@@ -20,7 +20,7 @@ const Home = () => {
         {snap.intro && (
             <motion.section
                 key="home"
-                className="home bg-gradient-to-br from-gray-100 to-white min-h-screen flex flex-col justify-center items-center px-4 sm:px-8"
+                className="home bg-gradient-to-br from-gray-100 to-white min-h-screen overflow-y-scroll flex flex-col justify-center items-center px-4 sm:px-8"
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
@@ -126,8 +126,8 @@ const Home = () => {
                     className="profile-header flex justify-between items-center px-4 sm:px-8 lg:px-16 cursor-pointer"
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                 >
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900">
-                    Your Profile
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-5">
+                    My Purecreate Profile
                   </h2>
                   {isProfileOpen ? (
                       <FaChevronUp className="text-gray-900 w-6 h-6" />
@@ -138,7 +138,7 @@ const Home = () => {
                 <AnimatePresence>
                   {isProfileOpen && (
                       <motion.div
-                          className="profile-card mx-auto p-6 bg-gray-50 border border-gray-300 shadow-md rounded-lg max-w-md mt-4"
+                          className="profile-card mx-auto p-6 bg-gray-50 border border-gray-300 shadow-md rounded-lg max-w-md mt-5"
                           initial="hidden"
                           animate="visible"
                           exit="hidden"
@@ -161,8 +161,8 @@ const Home = () => {
                         <div className="flex justify-center gap-4">
                           <CustomButton
                               type="outline"
-                              title="View Profile"
-                              handleClick={() => console.log("View Profile")}
+                              title="Profile"
+                              handleClick={() => console.log("Profile")}
                               customStyles="px-4 sm:px-6 py-2 border border-gray-900 text-gray-900 hover:bg-gray-100 rounded-full"
                           />
                           <CustomButton

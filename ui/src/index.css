@@ -12,6 +12,24 @@ html {
   font-family: "Inter", sans-serif;
 }
 
+/* Global scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 8px; /* Height of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; /* Dark scrollbar thumb */
+  border-radius: 10px; /* Rounded corners */
+  border: 2px solid #fff; /* White border for a modern effect */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Light track for contrast */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+
 @supports (font-variation-settings: normal) {
   html {
     font-family: "Inter var", sans-serif;
