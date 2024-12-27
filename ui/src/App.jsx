@@ -1,7 +1,6 @@
 import Canvas from './canvas'; // Import the 3D Canvas component
 import Customizer from './pages/Customizer'; // Import the Customizer page/component
 import Home from './pages/Home'; // Import the Home page/component
-import './app.css'
 /**
  * Main Application Component
  * Combines Home, Canvas, and Customizer components into a cohesive layout.
