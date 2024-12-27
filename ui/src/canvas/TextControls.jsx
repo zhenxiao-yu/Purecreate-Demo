@@ -5,22 +5,24 @@ import state from '../store';
 import { fonts } from '../constants/fonts.js';
 
 const defaultState = {
-    frontText: 'Front Text',
-    frontTextPosition: [0, 0, 0],
+    frontText: 'Purecreate',
+    frontTextPosition: [0, -0.04, 0.15],
     frontTextRotation: [0, 0, 0],
-    frontTextScale: [1, 1, 1],
+    frontTextScale: [0.15, 0.04, 0.1],
     frontTextFont: 'Arial',
     frontTextColor: '#000000',
     backText: 'Back Text',
-    backTextPosition: [0, 0, 0],
-    backTextRotation: [0, 0, 0],
-    backTextScale: [1, 1, 1],
-    backTextFont: 'Arial',
-    backTextColor: '#000000',
+    backTextPosition: [0, -0.04, -0.15],
+    backTextRotation: [0, Math.PI, 0],
+    backTextScale: [0.15, 0.04, 0.1],
+    backTextFont: 'Purecreate',
+    backTextColor: '#ffffff',
 };
 
+
+
 const Section = ({ title, children }) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <div className="mb-3">
