@@ -157,28 +157,32 @@ const TextControls = () => {
 
     return (
         <div className="absolute left-full ml-3 flex flex-col overflow-scroll space-y-4 w-72 max-h-96 p-4 bg-white rounded-lg shadow-md">
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between items-center mb-4 gap-2">
                 <button
-                    className="bg-gray-300 text-black px-4 py-2 rounded"
+                    className="bg-gray-200 text-black px-5 py-1 rounded-lg shadow hover:bg-gray-300 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     onClick={undo}
                     disabled={undoStack.length === 0}
+                    title="Undo the last action"
                 >
                     Undo
                 </button>
                 <button
-                    className="bg-gray-300 text-black px-4 py-2 rounded"
+                    className="bg-gray-200 text-black px-5 py-1 rounded-lg shadow hover:bg-gray-300 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"
                     onClick={redo}
                     disabled={redoStack.length === 0}
+                    title="Redo the last undone action"
                 >
                     Redo
                 </button>
                 <button
-                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    className="bg-red-500 text-white px-5 py-1 rounded-lg shadow-lg hover:bg-red-600 transition-all focus:ring-2 focus:ring-red-300 focus:outline-none"
                     onClick={restoreDefault}
+                    title="Restore default settings"
                 >
                     Reset
                 </button>
             </div>
+
 
             <Section title="Front Text">
                 <div className="space-y-2">
