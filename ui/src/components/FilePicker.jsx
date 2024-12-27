@@ -2,17 +2,35 @@ import React, { useState } from 'react';
 import CustomButton from './CustomButton';
 
 const FilePicker = ({ file, setFile, readFile }) => {
-    // 用于显示错误信息的状态
     const [error, setError] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
 
-    // 文件上传处理函数
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
+        validateFile(selectedFile);
+    };
 
-        // 检查文件类型是否为图片
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const selectedFile = e.dataTransfer.files[0];
+        validateFile(selectedFile);
+    };
+
+    const validateFile = (selectedFile) => {
         if (selectedFile && !selectedFile.type.startsWith('image/')) {
-            setError('仅支持图片文件');
-            setFile(''); // 清空文件状态
+            setError('Only image files are supported.');
+            setFile('');
         } else {
             setError('');
             setFile(selectedFile);
@@ -20,41 +38,64 @@ const FilePicker = ({ file, setFile, readFile }) => {
     };
 
     return (
-        <div className="filepicker-container bg-black text-white p-12 rounded-lg shadow-lg max-w-lg mx-auto">
-            {/* 文件选择部分 */}
-            <div className="flex-1 flex flex-col items-center">
+        <div className="filepicker-container bg-white text-black p-8 sm:p-10 md:p-12 rounded-xl shadow-xl max-w-[90%] sm:max-w-md lg:max-w-lg mx-auto flex flex-col items-center gap-6">
+            {/* Heading Section */}
+            <div className="text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-2">Upload File</h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                    Drag and drop your file here or click the button to upload a supported image file (JPG, PNG, GIF).
+                </p>
+            </div>
+
+            {/* Drag-and-Drop Area */}
+            <div
+                className={`w-full border-2 ${
+                    isDragging ? 'border-dashed border-gray-800' : 'border-dashed border-gray-500'
+                } rounded-lg p-6 text-center bg-gray-100 transition ${
+                    isDragging ? 'bg-gray-200' : ''
+                }`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+            >
                 <input
                     id="file-upload"
                     type="file"
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="hidden" // 隐藏原始文件选择器
+                    className="hidden"
                 />
                 <label
                     htmlFor="file-upload"
-                    className="filepicker-label cursor-pointer text-white text-2xl py-6 px-12 rounded hover: transition transform hover:scale-110 duration-300">
-                    上传文件
+                    className="cursor-pointer bg-white text-black text-lg sm:text-xl py-2 px-4 sm:py-4 sm:px-8 rounded-lg transition transform hover:scale-105 hover:bg-gray-200 duration-300 shadow-md inline-block">
+                    Click to Choose File
                 </label>
-
-                {/* 显示选择的文件名或错误信息 */}
-                <div className={`mt-6 text-xl ${error ? 'text-gray-400' : 'text-white'} max-w-full overflow-hidden text-ellipsis`} style={{ wordBreak: 'break-word' }}>
-                    {error ? error : file === '' ? '未选择文件' : file.name}
-                </div>
+                <p className="mt-4 text-sm text-gray-600">
+                    Or drag and drop your file here
+                </p>
             </div>
 
-            {/* 按钮部分 */}
-            <div className="mt-8 flex flex-wrap justify-center gap-6">
+            {/* Display Selected File Name or Error */}
+            <div
+                className={`mt-4 text-center text-sm sm:text-base ${
+                    error ? 'text-red-500' : 'text-gray-600'
+                } break-words max-w-full`}>
+                {error ? error : file === '' ? 'No file selected' : `Selected file: ${file.name}`}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex w-full justify-center gap-4">
                 <CustomButton
                     type="outline"
                     title="Logo"
                     handleClick={() => readFile('logo')}
-                    customStyles="text-xl border-gray-500 text-gray-500 hover:bg-gray-700 hover:text-white px-8 py-4 transition transform hover:scale-110 duration-300"
+                    customStyles="w-40 h-12 sm:w-48 sm:h-14 text-sm sm:text-base border-gray-800 text-gray-800 hover:bg-gray-800 hover:text-white rounded-lg transition transform hover:scale-105 duration-300"
                 />
                 <CustomButton
                     type="filled"
-                    title="Full"
+                    title="Texture"
                     handleClick={() => readFile('full')}
-                    customStyles="text-xl bg-gray-500 text-white hover:bg-gray-600 px-8 py-4 transition transform hover:scale-110 duration-300"
+                    customStyles="w-40 h-12 sm:w-48 sm:h-14 text-sm sm:text-base bg-gray-800 text-white hover:bg-gray-700 rounded-lg transition transform hover:scale-105 duration-300"
                 />
             </div>
         </div>

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, Center } from '@react-three/drei';
+import { useSnapshot } from 'valtio';
+
+import state from '../store';
 import Shirt from './Shirt';
 import Backdrop from './Backdrop';
 import CameraRig from './CameraRig';
@@ -56,6 +59,7 @@ const SixDoFControls = () => {
 // Main Canvas component to render the 3D model
 const CanvasModel = () => {
   const [fov, setFov] = useState(25); // Field of View for the camera
+  const snap = useSnapshot(state); // Snapshot from Valtio state
 
   useEffect(() => {
     // Update FOV dynamically based on window width
@@ -113,8 +117,8 @@ const CanvasModel = () => {
             {/* Backdrop for better visual context */}
             <Backdrop />
 
-            {/* Centered 3D model */}
-            <Center>
+            {/* Centered 3D model with dynamic position */}
+            <Center position={snap.intro ? [0.45, 0, 0] : [0, 0, 0]}>
               <Shirt castShadow receiveShadow />
             </Center>
           </CameraRig>

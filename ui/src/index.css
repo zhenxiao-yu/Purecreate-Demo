@@ -1,10 +1,13 @@
+/* Font Imports */
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,600;1,900&display=swap");
 @import url("https://rsms.me/inter/inter.css");
 
+/* Tailwind Base, Components, and Utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Global Styles */
 html {
   font-family: "Inter", sans-serif;
 }
@@ -15,6 +18,12 @@ html {
   }
 }
 
+/* Glassmorphism Utility */
+.glassmorphism {
+  @apply bg-white/25 shadow-lg backdrop-blur-lg border border-white/20;
+}
+
+/* Layout and Components */
 .app {
   @apply relative w-full h-screen overflow-hidden;
 }
@@ -36,7 +45,7 @@ html {
 }
 
 .editortabs-container {
-  @apply glassmorphism w-16 border-[2px] rounded-lg flex flex-col justify-center items-center ml-1 py-4 gap-4;
+  @apply glassmorphism w-16 border-2 rounded-lg flex flex-col justify-center items-center ml-1 py-4 gap-4;
 }
 
 .filtertabs-container {
@@ -44,7 +53,7 @@ html {
 }
 
 .filepicker-container {
-  @apply absolute left-full ml-3 glassmorphism p-3 w-[195px] h-[220px] flex flex-col rounded-md;
+  @apply absolute left-full ml-3 glassmorphism p-3 w-[495px] h-[520px] flex flex-col rounded-md;
 }
 
 .filepicker-label {
@@ -55,30 +64,18 @@ html {
   @apply w-14 h-14 flex justify-center items-center cursor-pointer select-none;
 }
 
-.glassmorphism {
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 2px 30px 0 rgba(31, 38, 135, 0.07);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
+/* Input Styles */
 input[type="file"] {
   z-index: -1;
   position: absolute;
   opacity: 0;
 }
 
+/* Sketch Picker Customizations */
 .sketch-picker {
-  width: 170px !important;
-  background: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 2px 30px 0 rgba(31, 38, 135, 0.07) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
-  border-radius: 6px !important;
+  @apply w-[170px] glassmorphism rounded-md !important;
 }
 
 .sketch-picker > div:nth-child(3) {
-  display: none !important;
+  @apply hidden !important;
 }
