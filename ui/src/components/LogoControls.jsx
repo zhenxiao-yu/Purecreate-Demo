@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSnapshot } from 'valtio';
 
-import state from '../store';
+import state from '../store/index.js';
 
 const LogoControls = () => {
     const snap = useSnapshot(state);

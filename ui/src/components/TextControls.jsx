@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSnapshot } from 'valtio';
 import { SketchPicker } from 'react-color';
-import state from '../store';
+import state from '../store/index.js';
 import { fonts } from '../constants/fonts.js';
 
 const defaultState = {
@@ -10,7 +10,7 @@ const defaultState = {
     frontTextRotation: [0, 0, 0],
     frontTextScale: [0.15, 0.04, 0.1],
     frontTextFont: 'Arial',
-    frontTextColor: '#000000',
+    frontTextColor: 'gold',
     backText: 'Back Text',
     backTextPosition: [0, -0.04, -0.15],
     backTextRotation: [0, Math.PI, 0],
