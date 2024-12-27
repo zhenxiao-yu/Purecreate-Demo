@@ -1,7 +1,8 @@
 import Canvas from './canvas'; // Import the 3D Canvas component
 import Customizer from './pages/Customizer'; // Import the Customizer page/component
 import Home from './pages/Home';
-import AnimatedCursor from "react-animated-cursor"; // Import the Home page/component
+import AnimatedCursor from "react-animated-cursor";
+
 /**
  * Main Application Component
  * Combines Home, Canvas, and Customizer components into a cohesive layout.
