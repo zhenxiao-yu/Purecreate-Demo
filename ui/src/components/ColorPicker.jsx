@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { SketchPicker } from 'react-color';
 import { useSnapshot } from 'valtio';
-
 import state from '../store';
 
 const popularColors = [
@@ -30,55 +29,54 @@ const rgbToHex = (rgb) => {
 
 const ColorPicker = () => {
     const snap = useSnapshot(state);
-    const [inputColor, setInputColor] = useState(
-        snap.color || '#000000'
-    ); // Initialize input state
+    const [inputColor, setInputColor] = useState(snap.color || '#000000');
+    const [error, setError] = useState('');
 
     const handleInputChange = (e) => {
         const value = e.target.value.trim();
         setInputColor(value);
+        setError('');
 
-        // Validate HEX or RGB input and update state
         if (isValidHex(value)) {
             state.color = value;
         } else if (isValidRgb(value)) {
             const hexValue = rgbToHex(value);
             state.color = hexValue;
+        } else {
+            setError('Invalid HEX or RGB color format.');
         }
     };
 
     const handlePickerChange = (color) => {
         state.color = color.hex;
-        setInputColor(color.hex); // Update input value
+        setInputColor(color.hex);
+        setError('');
     };
 
     const handlePopularColorClick = (color) => {
         state.color = color;
-        setInputColor(color); // Update input and picker color
+        setInputColor(color);
+        setError('');
     };
 
     return (
         <div className="absolute left-full ml-3 p-4 bg-white rounded-lg shadow-md w-80">
-            {/* Color Picker */}
             <div className="flex flex-col items-center">
-                <div className="w-full">
-                    <SketchPicker
-                        color={snap.color || '#000000'}
-                        disableAlpha
-                        onChange={handlePickerChange}
-                        styles={{
-                            default: {
-                                picker: {
-                                    width: '100%',
-                                    boxSizing: 'border-box',
-                                },
+                <SketchPicker
+                    color={snap.color || '#000000'}
+                    disableAlpha
+                    onChange={handlePickerChange}
+                    styles={{
+                        default: {
+                            picker: {
+                                width: '100%',
+                                boxSizing: 'border-box',
                             },
-                        }}
-                    />
-                </div>
+                        },
+                    }}
+                />
             </div>
 
-            {/* Input for HEX or RGB */}
             <div className="mt-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                     Enter Color (HEX or RGB):
@@ -88,11 +86,14 @@ const ColorPicker = () => {
                     value={inputColor}
                     onChange={handleInputChange}
                     placeholder="#000000 or rgb(0,0,0)"
+                    aria-label="Color input"
                     className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 text-sm"
                 />
+                {error && (
+                    <p className="text-red-500 text-xs mt-1">{error}</p>
+                )}
             </div>
 
-            {/* Popular Colors */}
             <div className="mt-4">
                 <p className="text-sm font-medium text-gray-700 mb-2">
                     Popular Colors:
@@ -101,11 +102,19 @@ const ColorPicker = () => {
                     {popularColors.map((color) => (
                         <div
                             key={color}
-                            className="w-10 h-10 rounded-full cursor-pointer border-2 border-transparent hover:border-blue-500 transition-colors"
+                            className="w-10 h-10 rounded-full cursor-pointer border-2 border-transparent hover:border-blue-500 transition-all"
                             style={{ backgroundColor: color }}
                             onClick={() => handlePopularColorClick(color)}
                             title={color}
-                        />
+                            aria-label={`Select color ${color}`}
+                        >
+                            <span
+                                className="sr-only"
+                                role="tooltip"
+                            >
+                                {color}
+                            </span>
+                        </div>
                     ))}
                 </div>
             </div>
