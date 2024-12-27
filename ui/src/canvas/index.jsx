@@ -4,9 +4,9 @@ import { OrbitControls, Center } from '@react-three/drei';
 import Shirt from './Shirt';
 import Backdrop from './Backdrop';
 import CameraRig from './CameraRig';
-import { Vector3 } from 'three';
+import { calculateFov, handleKeyControls } from '../config/helpers';
 
-// Error Boundary to handle potential rendering issues gracefully
+// ErrorBoundary to catch rendering errors in the Canvas component
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -14,122 +14,73 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError() {
+    // Update state to show fallback UI
     return { hasError: true };
   }
 
   componentDidCatch(error, info) {
+    // Log error details for debugging
     console.error("Error caught by ErrorBoundary:", error, info);
   }
 
   render() {
     if (this.state.hasError) {
+      // Fallback UI when an error occurs
       return <div>Something went wrong. Please reload the page.</div>;
     }
     return this.props.children;
   }
 }
 
-// Custom Controls Component for 6DoF keyboard-based controls
+// Six Degrees of Freedom Controls for enhanced camera interaction
 const SixDoFControls = () => {
   const { camera } = useThree();
+  const translationSpeed = 0.2; // Speed for camera movement
+  const rotationSpeed = 0.01; // Speed for camera rotation
 
-  // Movement speeds
-  const translationSpeed = 0.2;
-  const rotationSpeed = 0.01;
-
+  // Keyboard controls for moving and rotating the camera
   const handleKeyDown = useCallback(
-      (event) => {
-        const move = new Vector3();
-
-        switch (event.key) {
-            // Translation (movement)
-          case 'w': // Forward
-            move.z = -translationSpeed;
-            break;
-          case 's': // Backward
-            move.z = translationSpeed;
-            break;
-          case 'a': // Left
-            move.x = -translationSpeed;
-            break;
-          case 'd': // Right
-            move.x = translationSpeed;
-            break;
-          case 'q': // Down
-            move.y = -translationSpeed;
-            break;
-          case 'e': // Up
-            move.y = translationSpeed;
-            break;
-
-            // Rotation
-          case 'ArrowUp': // Pitch up
-            camera.rotation.x -= rotationSpeed;
-            break;
-          case 'ArrowDown': // Pitch down
-            camera.rotation.x += rotationSpeed;
-            break;
-          case 'ArrowLeft': // Yaw left
-            camera.rotation.y -= rotationSpeed;
-            break;
-          case 'ArrowRight': // Yaw right
-            camera.rotation.y += rotationSpeed;
-            break;
-          case 'r': // Roll left
-            camera.rotation.z -= rotationSpeed;
-            break;
-          case 'f': // Roll right
-            camera.rotation.z += rotationSpeed;
-            break;
-
-          default:
-            break;
-        }
-
-        // Apply translation
-        camera.position.add(move);
-      },
+      (event) => handleKeyControls(event, camera, translationSpeed, rotationSpeed),
       [camera, translationSpeed, rotationSpeed]
   );
 
+  // Attach and detach keydown event listener
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  return null;
+  return null; // No visible UI component
 };
 
+// Main Canvas component to render the 3D model
 const CanvasModel = () => {
-  const [fov, setFov] = useState(25); // Default FOV
+  const [fov, setFov] = useState(25); // Field of View for the camera
 
-  // Adjust FOV dynamically based on window width
   useEffect(() => {
+    // Update FOV dynamically based on window width
     const updateFov = () => {
-      const width = window.innerWidth;
-      if (width <= 600) setFov(35); // Wider FOV for smaller screens
-      else if (width <= 1260) setFov(30);
-      else setFov(25); // Default for larger screens
+      setFov(calculateFov(window.innerWidth));
     };
 
-    updateFov(); // Initial FOV setup
-    window.addEventListener('resize', updateFov);
+    updateFov(); // Initial setup
+    window.addEventListener('resize', updateFov); // Handle window resize
 
-    return () => window.removeEventListener('resize', updateFov); // Cleanup listener
+    return () => window.removeEventListener('resize', updateFov);
   }, []);
 
   return (
       <ErrorBoundary>
         <Canvas
-            camera={{ position: [0, 0, 5], fov }} // Dynamic FOV and initial position
-            gl={{ preserveDrawingBuffer: true }} // Enable saving canvas images
-            shadows // Enable dynamic shadows
-            className="w-full max-w-full h-full transition-all ease-in" // Responsive styling
+            camera={{ position: [0, 0, 5], fov }} // Camera configuration
+            gl={{ preserveDrawingBuffer: true }} // Preserve canvas drawing
+            shadows // Enable shadows for realistic lighting
+            className="w-full max-w-full h-full transition-all ease-in"
         >
-          {/* Ambient light for overall scene illumination */}
+          {/* Ambient light for general illumination */}
           <ambientLight intensity={0.5} />
 
-          {/* Directional light with shadows */}
+          {/* Directional light for shadows and highlights */}
           <directionalLight
               castShadow
               position={[5, 5, 5]}
@@ -143,26 +94,26 @@ const CanvasModel = () => {
               shadow-camera-bottom={-10}
           />
 
-          {/* OrbitControls for mouse-driven interaction */}
+          {/* Orbit controls for intuitive camera movement */}
           <OrbitControls
               enablePan
               enableZoom
               enableRotate
-              minDistance={2} // Minimum zoom distance
-              maxDistance={10} // Maximum zoom distance
-              maxPolarAngle={Math.PI / 2} // Limit vertical rotation to 90 degrees
-              minPolarAngle={0} // Prevent flipping below the horizon
+              minDistance={2}
+              maxDistance={10}
+              maxPolarAngle={Math.PI / 2}
+              minPolarAngle={0}
           />
 
-          {/* Custom 6DoF keyboard controls */}
+          {/* Custom camera controls */}
           <SixDoFControls />
 
-          {/* CameraRig for dynamic camera positioning */}
+          {/* Custom camera rig for model interaction */}
           <CameraRig>
-            {/* Backdrop for the scene's background */}
+            {/* Backdrop for better visual context */}
             <Backdrop />
 
-            {/* Center ensures the Shirt model is centered */}
+            {/* Centered 3D model */}
             <Center>
               <Shirt castShadow receiveShadow />
             </Center>

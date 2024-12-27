@@ -32,3 +32,67 @@ export const getContrastingColor = (color) => {
   // Return black or white depending on the brightness
   return brightness > 128 ? "black" : "white";
 };
+
+import { Vector3 } from 'three';
+
+// Function to handle dynamic FOV adjustment based on window width
+export const calculateFov = (width) => {
+  if (width <= 600) return 35; // Wider FOV for smaller screens
+  if (width <= 1260) return 30;
+  return 25; // Default for larger screens
+};
+
+// Function to handle 6DoF keyboard controls
+export const handleKeyControls = (event, camera, translationSpeed, rotationSpeed) => {
+  const move = new Vector3();
+
+  switch (event.key) {
+      // Translation (movement)
+    case 'w': // Forward
+      move.z = -translationSpeed;
+      break;
+    case 's': // Backward
+      move.z = translationSpeed;
+      break;
+    case 'a': // Left
+      move.x = -translationSpeed;
+      break;
+    case 'd': // Right
+      move.x = translationSpeed;
+      break;
+    case 'q': // Down
+      move.y = -translationSpeed;
+      break;
+    case 'e': // Up
+      move.y = translationSpeed;
+      break;
+
+      // Rotation
+    case 'ArrowUp': // Pitch up
+      camera.rotation.x -= rotationSpeed;
+      break;
+    case 'ArrowDown': // Pitch down
+      camera.rotation.x += rotationSpeed;
+      break;
+    case 'ArrowLeft': // Yaw left
+      camera.rotation.y -= rotationSpeed;
+      break;
+    case 'ArrowRight': // Yaw right
+      camera.rotation.y += rotationSpeed;
+      break;
+    case 'r': // Roll left
+      camera.rotation.z -= rotationSpeed;
+      break;
+    case 'f': // Roll right
+      camera.rotation.z += rotationSpeed;
+      break;
+
+    default:
+      break;
+  }
+
+  // Apply translation
+  camera.position.add(move);
+};
+
+
