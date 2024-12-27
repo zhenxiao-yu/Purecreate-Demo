@@ -2,7 +2,7 @@ import React from 'react';
 import { useSnapshot } from 'valtio';
 import { SketchPicker } from 'react-color';
 import state from '../store';
-import {fonts} from "../config/constants.js";
+import {fonts} from "../constants/fonts.js";
 
 const TextControls = () => {
   const snap = useSnapshot(state);

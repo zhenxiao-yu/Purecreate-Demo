@@ -6,7 +6,10 @@ import LogoControls from '../canvas/LogoControls';
 import TextControls from '../canvas/TextControls';
 import state from '../store';
 import { downloadCanvasToImage, reader } from '../config/helpers';
-import { EditorTabs, FilterTabs, DecalTypes, texturesLogos } from '../config/constants';
+import { EditorTabs } from "../constants/editorTabs";
+import { FilterTabs } from "../constants/filterTabs";
+import { DecalTypes } from "../constants/decalTypes";
+import { texturesLogos } from "../constants/texturesLogos";
 import { fadeAnimation, slideAnimation } from '../config/motion';
 import { ColorPicker, CustomButton, FilePicker, TextureLogoPicker, Tab } from '../components';
 
