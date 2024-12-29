@@ -16,7 +16,7 @@ const positionsAreEqual = (pos1, pos2) =>
 const CameraRig = ({ children }) => {
   const { camera } = useThree();
 
-  // Target position based on screen width
+  // Determine target position based on screen width
   const getTargetPosition = useCallback(() => {
     const { innerWidth } = window;
     if (innerWidth <= breakpoints.isMobile) return [0, 0.2, 2.5];
@@ -32,8 +32,8 @@ const CameraRig = ({ children }) => {
         x: targetPosition[0],
         y: targetPosition[1],
         z: targetPosition[2],
-        duration: 0.7, // Adjust duration for smoother effect
-        ease: 'power3.inOut', // Enhanced easing
+        duration: 0.7, // Smooth transition
+        ease: 'power3.inOut',
       });
     }
   }, [getTargetPosition, camera.position]);
@@ -47,7 +47,7 @@ const CameraRig = ({ children }) => {
     // Initial setup
     updateCameraPosition();
 
-    // Resize listener
+    // Add resize listener
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -57,7 +57,8 @@ const CameraRig = ({ children }) => {
 
   return (
       <>
-        <OrbitControls enableDamping={true} dampingFactor={0.1} /> {/* Optional */}
+        {/* Ensure OrbitControls doesn't render stray text */}
+        <OrbitControls enableDamping dampingFactor={0.1} />
         {children}
       </>
   );
@@ -65,7 +66,7 @@ const CameraRig = ({ children }) => {
 
 export default CameraRig;
 
-// Utility function: Debounce with clearTimeout
+// Utility function: Debounce implementation
 const debounce = (func, wait) => {
   let timeout;
   return (...args) => {

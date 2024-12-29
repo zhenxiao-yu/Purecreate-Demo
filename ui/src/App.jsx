@@ -1,7 +1,7 @@
 import Canvas from './canvas'; // Import the 3D Canvas component
 import Customizer from './pages/Customizer'; // Import the Customizer page/component
-import Home from './pages/Home';
-import AnimatedCursor from "react-animated-cursor";
+import Home from './pages/Home'; // Import the Home page/component
+import AnimatedCursor from 'react-animated-cursor'; // Import AnimatedCursor for custom cursor effects
 
 /**
  * Main Application Component
@@ -10,14 +10,17 @@ import AnimatedCursor from "react-animated-cursor";
 function App() {
     return (
         <main className="app transition-all ease-in">
-            <AnimatedCursor  innerSize={3}
-                             outerSize={10}
-                             color='46, 46, 46'
-                             outerAlpha={0.4}
-                             innerScale={3}
-                             outerScale={6}
-                             trailingSpeed={6}
+            {/* Animated Cursor Configuration */}
+            <AnimatedCursor
+                innerSize={3}
+                outerSize={10}
+                color="46, 46, 46"
+                outerAlpha={0.4}
+                innerScale={3}
+                outerScale={6}
+                trailingSpeed={6}
             />
+
             {/* Render the Home page */}
             <Home />
 

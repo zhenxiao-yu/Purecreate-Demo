@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './index.css';
-import './normalize.css'
+import './theme/index.css';
+import './theme/normalize.css'
 import { Analytics } from '@vercel/analytics/react';
 
 // Create the root for React application and render the App component
