@@ -33,8 +33,6 @@ export const getContrastingColor = (color) => {
   return brightness > 128 ? "black" : "white";
 };
 
-import { Vector3 } from 'three';
-
 // Function to handle dynamic FOV adjustment based on window width
 export const calculateFov = (width) => {
   if (width <= 600) return 35; // Wider FOV for smaller screens
@@ -42,57 +40,22 @@ export const calculateFov = (width) => {
   return 25; // Default for larger screens
 };
 
-// Function to handle 6DoF keyboard controls
-export const handleKeyControls = (event, camera, translationSpeed, rotationSpeed) => {
-  const move = new Vector3();
+import * as THREE from 'three';
 
-  switch (event.key) {
-      // Translation (movement)
-    case 'w': // Forward
-      move.z = -translationSpeed;
-      break;
-    case 's': // Backward
-      move.z = translationSpeed;
-      break;
-    case 'a': // Left
-      move.x = -translationSpeed;
-      break;
-    case 'd': // Right
-      move.x = translationSpeed;
-      break;
-    case 'q': // Down
-      move.y = -translationSpeed;
-      break;
-    case 'e': // Up
-      move.y = translationSpeed;
-      break;
+export const createTextTexture = (text, font, size, color) => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
 
-      // Rotation
-    case 'ArrowUp': // Pitch up
-      camera.rotation.x -= rotationSpeed;
-      break;
-    case 'ArrowDown': // Pitch down
-      camera.rotation.x += rotationSpeed;
-      break;
-    case 'ArrowLeft': // Yaw left
-      camera.rotation.y -= rotationSpeed;
-      break;
-    case 'ArrowRight': // Yaw right
-      camera.rotation.y += rotationSpeed;
-      break;
-    case 'r': // Roll left
-      camera.rotation.z -= rotationSpeed;
-      break;
-    case 'f': // Roll right
-      camera.rotation.z += rotationSpeed;
-      break;
+  ctx.font = `${size}px ${font}`;
+  const textWidth = ctx.measureText(text).width;
+  canvas.width = textWidth;
+  canvas.height = size;
 
-    default:
-      break;
-  }
+  ctx.fillStyle = color;
+  ctx.font = `${size}px ${font}`;
+  ctx.fillText(text, 0, size);
 
-  // Apply translation
-  camera.position.add(move);
+  return new THREE.CanvasTexture(canvas);
 };
-
 
