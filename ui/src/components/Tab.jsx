@@ -8,14 +8,25 @@ const Tab = ({ tab, isFilterTab, isActiveTab, handleClick }) => {
   const snap = useSnapshot(state);
 
   const activeStyles = isFilterTab && isActiveTab
-      ? { backgroundColor: snap.color, opacity: 0.8 }
-      : { backgroundColor: "transparent", opacity: 1 };
+      ? {
+        backgroundColor: snap.color,
+        opacity: 0.8,
+        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
+        transform: 'scale(1.05)',
+      }
+      : {
+        backgroundColor: 'transparent',
+        opacity: 1,
+        boxShadow: 'none',
+        transform: 'scale(1)',
+      };
 
   const getClassName = () => `
     tab-btn
     ${isFilterTab ? 'rounded-full glassmorphism' : 'rounded-lg shadow-md'}
-    hover:opacity-80 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-    transition-all duration-300 ease-in-out
+    hover:opacity-90 hover:shadow-lg hover:scale-105
+    focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+    transition-transform duration-300 ease-in-out
   `;
 
   return (
@@ -31,7 +42,11 @@ const Tab = ({ tab, isFilterTab, isActiveTab, handleClick }) => {
         <img
             src={tab.icon}
             alt={tab.name}
-            className={`${isFilterTab ? 'w-2/3 h-2/3' : 'w-11/12 h-11/12 object-contain'}`}
+            className={`
+          ${isFilterTab ? 'w-2/3 h-2/3' : 'w-11/12 h-11/12 object-contain'}
+          transition-transform duration-300 ease-in-out
+          hover:scale-110
+        `}
         />
       </button>
   );

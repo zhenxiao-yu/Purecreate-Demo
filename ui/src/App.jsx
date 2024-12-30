@@ -12,8 +12,8 @@ function App() {
         <main className="app transition-all ease-in">
             {/* Animated Cursor Configuration */}
             <AnimatedCursor
-                innerSize={5}
-                outerSize={8}
+                innerSize={4}
+                outerSize={6}
                 color="46, 46, 46"
                 outerAlpha={0.5}
                 innerScale={3}
