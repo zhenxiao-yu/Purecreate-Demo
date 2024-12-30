@@ -156,7 +156,7 @@ const TextControls = () => {
     );
 
     return (
-        <div className="absolute left-full ml-3 flex flex-col overflow-scroll space-y-4 w-72 max-h-96 p-4 bg-white rounded-lg shadow-md">
+        <div className="absolute left-full ml-3 flex flex-col overflow-scroll space-y-4 w-80 max-h-96 p-4 bg-white rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-4 gap-2">
                 <button
                     className="bg-gray-200 text-black px-5 py-1 rounded-lg shadow hover:bg-gray-300 transition-all disabled:bg-gray-100 disabled:cursor-not-allowed"

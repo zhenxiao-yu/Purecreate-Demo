@@ -12,13 +12,13 @@ function App() {
         <main className="app transition-all ease-in">
             {/* Animated Cursor Configuration */}
             <AnimatedCursor
-                innerSize={3}
-                outerSize={10}
+                innerSize={5}
+                outerSize={8}
                 color="46, 46, 46"
-                outerAlpha={0.4}
+                outerAlpha={0.5}
                 innerScale={3}
                 outerScale={6}
-                trailingSpeed={6}
+                trailingSpeed={9}
             />
 
             {/* Render the Home page */}

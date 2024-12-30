@@ -102,7 +102,7 @@ const LogoControls = () => {
     );
 
     return (
-        <div className="absolute left-full ml-4 bg-white shadow-md rounded-lg p-5 w-72 md:w-96 max-h-[80vh] overflow-y-auto transform transition-all duration-300 hover:shadow-lg">
+        <div className="absolute left-full ml-4 bg-white shadow-md rounded-lg p-5 w-80 md:w-80 max-h-[80vh] overflow-y-auto transform transition-all duration-300 hover:shadow-lg">
             <h2 className="text-xl font-semibold mb-8 text-gray-800">Logo Editor</h2>
 
             <h3 className="text-md font-semibold mb-3 text-gray-800">Front Logo Controls</h3>

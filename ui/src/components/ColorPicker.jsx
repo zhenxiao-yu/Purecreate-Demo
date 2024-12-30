@@ -12,20 +12,6 @@ const isValidHex = (value) => /^#([0-9A-F]{3}|[0-9A-F]{6})$/i.test(value);
 const isValidRgb = (value) =>
     /^rgb\((\s*\d+\s*,\s*\d+\s*,\s*\d+\s*)\)$/i.test(value);
 
-const hexToRgb = (hex) => {
-    const bigint = parseInt(hex.slice(1), 16);
-    return `rgb(${(bigint >> 16) & 255}, ${(bigint >> 8) & 255}, ${
-        bigint & 255
-    })`;
-};
-
-const rgbToHex = (rgb) => {
-    const result = rgb
-        .match(/\d+/g)
-        .map((x) => parseInt(x).toString(16).padStart(2, '0'))
-        .join('');
-    return `#${result}`;
-};
 
 const ColorPicker = () => {
     const snap = useSnapshot(state);
