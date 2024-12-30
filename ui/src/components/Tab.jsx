@@ -38,15 +38,14 @@ const Tab = ({ tab, isFilterTab, isActiveTab, handleClick }) => {
           aria-label={`Tab for ${tab.name}`}
           role="tab"
           aria-selected={isActiveTab}
+          title={`Click to view ${tab.name}`} // Tooltip added here
       >
         <img
             src={tab.icon}
             alt={tab.name}
-            className={`
-          ${isFilterTab ? 'w-2/3 h-2/3' : 'w-11/12 h-11/12 object-contain'}
-          transition-transform duration-300 ease-in-out
-          hover:scale-110
-        `}
+            className={`${
+                isFilterTab ? 'w-2/3 h-2/3' : 'w-11/12 h-11/12 object-contain'
+            } transition-transform duration-300 ease-in-out hover:scale-110`}
         />
       </button>
   );
