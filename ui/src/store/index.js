@@ -2,12 +2,12 @@ import { proxy } from 'valtio';
 
 const state = proxy({
   intro: true,
-  color: '#648248',
+  color: '#181618',
   isFrontLogoTexture: true,
   isBackLogoTexture: true,
   isFrontText: true,
   isBackText: true,
-  isFullTexture: false,
+  isFullTexture: true,
   frontLogoDecal: './threejs.png',
   fullDecal: './texture.jpeg',
   frontLogoPosition: [ 0, 0.04, 0.15 ],
@@ -23,7 +23,7 @@ const state = proxy({
   frontTextScale: [0.15, 0.04, 0.1],
   frontTextFont: 'Arial',
   frontTextSize: 64,
-  frontTextColor: 'gold',
+  frontTextColor: '#ffffff',
   backText: 'Purecreate',
   backTextPosition: [0, -0.04, -0.15],
   backTextRotation: [0, Math.PI, 0],
