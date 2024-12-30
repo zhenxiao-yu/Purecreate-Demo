@@ -7,7 +7,7 @@ const state = proxy({
   isBackLogoTexture: true,
   isFrontText: true,
   isBackText: true,
-  isFullTexture: true,
+  isFullTexture: false,
   frontLogoDecal: './threejs.png',
   fullDecal: './texture.jpeg',
   frontLogoPosition: [ 0, 0.04, 0.15 ],

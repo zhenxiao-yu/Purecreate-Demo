@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { useSnapshot } from 'valtio';
-import { SketchPicker } from 'react-color';
+import { debounce } from 'lodash';
 import state from '../store/index.js';
 import { fonts } from '../constants/fonts.js';
+
+const SketchPicker = lazy(() => import('react-color/lib/components/sketch/Sketch'));
 
 const defaultState = {
     frontText: 'Purecreate',
@@ -19,16 +21,16 @@ const defaultState = {
     backTextColor: '#ffffff',
 };
 
-
-
-const Section = ({ title, children }) => {
+const Section = React.memo(({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const handleToggle = () => setIsOpen(!isOpen);
 
     return (
         <div className="mb-3">
             <div
                 className="flex justify-between items-center bg-gray-300 p-2 rounded-md cursor-pointer"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleToggle}
             >
                 <span className="font-bold">{title}</span>
                 <span>{isOpen ? '-' : '+'}</span>
@@ -36,7 +38,7 @@ const Section = ({ title, children }) => {
             {isOpen && <div className="mt-2">{children}</div>}
         </div>
     );
-};
+});
 
 const TextControls = () => {
     const snap = useSnapshot(state);
@@ -45,14 +47,14 @@ const TextControls = () => {
 
     const saveState = () => {
         setUndoStack([...undoStack, { ...snap }]);
-        setRedoStack([]); // Clear redo stack on new changes
+        setRedoStack([]);
     };
 
     const undo = () => {
         if (undoStack.length > 0) {
             const prevState = undoStack.pop();
             setRedoStack([snap, ...redoStack]);
-            Object.assign(state, prevState); // Restore previous state
+            Object.assign(state, prevState);
         }
     };
 
@@ -60,22 +62,23 @@ const TextControls = () => {
         if (redoStack.length > 0) {
             const nextState = redoStack.shift();
             setUndoStack([...undoStack, snap]);
-            Object.assign(state, nextState); // Restore next state
+            Object.assign(state, nextState);
         }
     };
 
     const restoreDefault = () => {
         saveState();
-        Object.assign(state, defaultState); // Reset to default
+        Object.assign(state, { ...defaultState });
     };
+
+    const handleStateChangeDebounced = debounce((type, property, value) => {
+        saveState();
+        state[property] = value;
+    }, 200);
 
     const handleStateChange = (type, property, value) => {
         saveState();
-        if (type === 'front') {
-            state[property] = value;
-        } else if (type === 'back') {
-            state[property] = value;
-        }
+        state[property] = value;
     };
 
     const renderTransformControls = (type, label) => (
@@ -91,7 +94,7 @@ const TextControls = () => {
                             step="0.01"
                             value={snap[`${type}TextPosition`][index]}
                             onChange={(e) =>
-                                handleStateChange(
+                                handleStateChangeDebounced(
                                     type,
                                     `${type}TextPosition`,
                                     snap[`${type}TextPosition`].map((pos, i) =>
@@ -115,7 +118,7 @@ const TextControls = () => {
                             step="15"
                             value={snap[`${type}TextRotation`][index]}
                             onChange={(e) =>
-                                handleStateChange(
+                                handleStateChangeDebounced(
                                     type,
                                     `${type}TextRotation`,
                                     snap[`${type}TextRotation`].map((rot, i) =>
@@ -139,7 +142,7 @@ const TextControls = () => {
                             step="0.01"
                             value={snap[`${type}TextScale`][index]}
                             onChange={(e) =>
-                                handleStateChange(
+                                handleStateChangeDebounced(
                                     type,
                                     `${type}TextScale`,
                                     snap[`${type}TextScale`].map((scale, i) =>
@@ -183,7 +186,6 @@ const TextControls = () => {
                 </button>
             </div>
 
-
             <Section title="Front Text">
                 <div className="space-y-2">
                     <label className="flex items-center space-x-2">
@@ -215,13 +217,15 @@ const TextControls = () => {
                     </label>
                     <label className="flex items-center space-x-2">
                         <span>Color:</span>
-                        <SketchPicker
-                            color={snap.frontTextColor}
-                            disableAlpha
-                            onChange={(color) =>
-                                handleStateChange('front', 'frontTextColor', color.hex)
-                            }
-                        />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <SketchPicker
+                                color={snap.frontTextColor}
+                                disableAlpha
+                                onChangeComplete={(color) =>
+                                    handleStateChange('front', 'frontTextColor', color.hex)
+                                }
+                            />
+                        </Suspense>
                     </label>
                 </div>
                 {renderTransformControls('front', 'Front')}
@@ -258,13 +262,15 @@ const TextControls = () => {
                     </label>
                     <label className="flex items-center space-x-2">
                         <span>Color:</span>
-                        <SketchPicker
-                            color={snap.backTextColor}
-                            disableAlpha
-                            onChange={(color) =>
-                                handleStateChange('back', 'backTextColor', color.hex)
-                            }
-                        />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <SketchPicker
+                                color={snap.backTextColor}
+                                disableAlpha
+                                onChangeComplete={(color) =>
+                                    handleStateChange('back', 'backTextColor', color.hex)
+                                }
+                            />
+                        </Suspense>
                     </label>
                 </div>
                 {renderTransformControls('back', 'Back')}
