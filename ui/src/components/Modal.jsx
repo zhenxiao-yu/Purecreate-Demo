@@ -40,13 +40,6 @@ const Modal = ({ title, children, onClose }) => {
                 <div className="mb-4 text-gray-700">
                     {children || <p>No content provided.</p>}
                 </div>
-                <button
-                    type="button"
-                    className="mt-4 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2 focus:ring-offset-white transition duration-300 ease-in-out"
-                    onClick={onClose}
-                >
-                    Close
-                </button>
             </div>
         </div>
     );
