@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ColorPicker, FilePicker, TextureLogoPicker } from '../components';
+import {AiPicker, ColorPicker, FilePicker, TextureLogoPicker} from '../components';
 import { texturesLogos } from '../constants/texturesLogos';
 import { reader } from '../config/helpers';
 import state from '../store';
@@ -53,6 +53,8 @@ const TabContent = ({ activeEditorTab, setActiveEditorTab }) => {
                     handleTextureLogoClick={handleTextureLogoClick}
                 />
             );
+        case "aipicker":
+            return <AiPicker />;
         default:
             return null;
     }
