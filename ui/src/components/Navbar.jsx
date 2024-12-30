@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import { useSnapshot } from 'valtio';
 import state from '../store';
 import Modal from './Modal'; // Import the Modal component
-import TutorialModal from './modals/TutorialModal'; // Import Tutorial Modal
-import AccountModal from './modals/AccountModal'; // Import Account Modal
-import SettingsModal from './modals/SettingsModal'; // Import Settings Modal
+import TutorialModal from './Modals/TutorialModal'; // Import Tutorial Modal
+import AccountModal from './Modals/AccountModal'; // Import Account Modal
+import SettingsModal from './Modals/SettingsModal'; // Import Settings Modal
 
 const NavButton = ({ label, onClick }) => (
     <button
