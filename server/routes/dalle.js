@@ -1,36 +1,45 @@
 import express from 'express';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
+import {validatePrompt, validateSize} from "../utils/helper.js";
 
 dotenv.config();
 
 const router = express.Router();
+
+if (!process.env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is not defined in the environment variables.');
+}
+
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-function validateSize(size) {
-    const allowedSizes = ['256x256', '512x512', '1024x1024'];
-    if (!allowedSizes.includes(size)) {
-        throw new Error(`Invalid size. Allowed values: ${allowedSizes.join(', ')}`);
-    }
-}
+
 
 router.post('/', async (req, res) => {
     try {
         const { prompt, size = '1024x1024' } = req.body;
-        if (!prompt) {
-            return res.status(400).json({ error: 'Prompt is required to generate an image.' });
-        }
+
+        // Input validations
+        validatePrompt(prompt);
         validateSize(size);
 
+        // Generate image
         const response = await openai.images.generate({ prompt, n: 1, size });
-        const imageUrl = response.data[0].url;
-        res.json({ imageUrl });
-    } catch (error) {
-        if (error.response) {
-            res.status(500).json({ error: `Failed to generate image: ${error.response.data.error.message}` });
-        } else {
-            res.status(500).json({ error: 'An unexpected error occurred.' });
+        const imageUrl = response.data[0]?.url;
+
+        if (!imageUrl) {
+            throw new Error('Failed to retrieve the generated image URL.');
         }
+
+        res.json({ success: true, imageUrl });
+    } catch (error) {
+        const statusCode = error.response?.status || 500;
+        const errorMessage = error.response?.data?.error?.message || error.message;
+
+        res.status(statusCode).json({
+            success: false,
+            error: errorMessage,
+        });
     }
 });
 
