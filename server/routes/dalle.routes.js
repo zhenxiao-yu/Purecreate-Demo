@@ -1,38 +1,46 @@
-import express from 'express'
-import * as dotenv from 'dotenv'
-import cors from 'cors'
-import { Configuration, OpenAIApi} from 'openai'
+import { Router } from 'express';
+import OpenAI from 'openai';
 
-dotenv.config();
-
-const router = express.Router();
-const config = new Configuration({ 
-    apiKey: process.env.OPENAI_API_KEY,
+// Initialize OpenAI
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY, // Ensure this is set in your .env file
 });
 
-const openapi = new OpenAIApi(config);
+// Create a new router instance
+const router = Router();
 
-router.route('/').get((req, res) => {
-    res.status(200).json({ message: 'Hello from DALL.E ROUTES' })
-});
+// POST route for generating an image
+router.post('/generate', async (req, res) => {
+    const { prompt, size = '1024x1024' } = req.body;
 
-router.route('/').post(async (req, res) => {
-    try{
-        const {prompt} = req.body;
-        const response = await openapi.createImage({
+    try {
+        if (!prompt) {
+            return res.status(400).json({ error: 'Prompt is required to generate an image.' });
+        }
+
+        console.log(`Generating image for prompt: "${prompt}" with size: ${size}`);
+
+        const response = await openai.images.generate({
             prompt,
-            n:1,
-            size:'1024x1024',
-            response_format: 'b64_json'
+            n: 1, // Number of images to generate
+            size, // Supported sizes: '256x256', '512x512', '1024x1024'
         });
 
-        const image = response.data.data[0].b64_json;
-        res.status(200).json({photo:image});
-    }
+        const imageUrl = response.data[0].url;
 
-    catch(error){
-        console.error(error);
-        res.status(500).json({ message: 'Something went wrong'});
+        console.log('Image successfully generated:', imageUrl);
+
+        return res.status(200).json({ imageUrl });
+    } catch (error) {
+        if (error.response) {
+            console.error('OpenAI API Error:', error.response.data);
+            return res.status(500).json({
+                error: `Failed to generate image: ${error.response.data.error.message}`,
+            });
+        } else {
+            console.error('Unexpected Error:', error.message);
+            return res.status(500).json({ error: 'An unexpected error occurred.' });
+        }
     }
 });
 
