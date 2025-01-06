@@ -8,6 +8,8 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 20rem;
     transition: transform 0.2s ease-in-out;
+    max-width: 90vh;
+    overflow: scroll;
 }
 
 .ai-picker-header h2 {
@@ -112,3 +114,16 @@
         transform: rotate(360deg);
     }
 }
+
+.ai-picker-result {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.ai-picker-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+

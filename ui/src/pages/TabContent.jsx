@@ -54,7 +54,9 @@ const TabContent = ({ activeEditorTab, setActiveEditorTab }) => {
                 />
             );
         case "aipicker":
-            return <AiPicker />;
+            return <AiPicker
+                handleDecals={handleTextureLogoClick}
+            />;
         default:
             return null;
     }
