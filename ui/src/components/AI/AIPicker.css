@@ -1,36 +1,42 @@
+/* AI Picker Container */
 .ai-picker {
     position: absolute;
     left: 100%;
     margin-left: 1rem;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 20rem;
-    transition: transform 0.2s ease-in-out;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 22rem;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     max-width: 90vh;
-    overflow: scroll;
+    overflow-y: auto;
+    opacity: 1;
 }
 
-.ai-picker-header h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
+/* Header */
+.ai-picker-header h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
     color: #2d3748;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .ai-picker-header p {
     font-size: 0.875rem;
     color: #718096;
+    margin-bottom: 1rem;
+    line-height: 1.4;
 }
 
+/* Form Sections */
 .ai-picker-section {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .ai-picker-label {
     display: block;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: #4a5568;
     margin-bottom: 0.5rem;
@@ -38,75 +44,80 @@
 
 .ai-picker-textarea {
     width: 100%;
-    padding: 0.75rem;
-    font-size: 0.875rem;
-    border: 2px solid #e2e8f0;
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    border: 1px solid #e2e8f0;
     border-radius: 0.5rem;
-    background-color: #f7fafc;
+    background-color: #f9fafb;
     resize: none;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease;
+}
+
+.ai-picker-textarea:focus {
+    border-color: #3182ce;
+    outline: none;
+    background-color: #ffffff;
 }
 
 .ai-picker-select,
 .ai-picker-slider {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.6rem;
     font-size: 0.875rem;
-    border: 2px solid #e2e8f0;
+    border: 1px solid #e2e8f0;
     border-radius: 0.5rem;
-    background-color: #f7fafc;
+    background-color: #f9fafb;
+    transition: border-color 0.3s ease;
 }
 
-.ai-picker-creativity-level {
+.ai-picker-select:focus,
+.ai-picker-slider:focus {
+    border-color: #3182ce;
+    outline: none;
+    background-color: #ffffff;
+}
+
+.ai-picker-creativity-value {
     text-align: center;
     font-size: 0.875rem;
     font-weight: 600;
+    margin-top: 0.5rem;
+    transition: color 0.3s ease;
 }
 
-.ai-picker-creativity-level.high {
-    color: #e53e3e;
-}
-
-.ai-picker-creativity-level.medium {
-    color: #718096;
-}
-
-.ai-picker-creativity-level.low {
-    color: #38a169;
-}
-
+/* Button Alignment */
 .ai-picker-actions {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 1rem;
 }
 
-.ai-picker-button {
-    width: 10rem;
-    height: 3rem;
-    font-size: 0.875rem;
-    transition: transform 0.2s ease-in-out;
-}
-
-.ai-picker-button:hover {
-    transform: scale(1.05);
-}
-
+/* Loader */
 .ai-picker-loader {
-    width: 10rem;
-    height: 3rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .spinner {
-    width: 1.5rem;
-    height: 1.5rem;
-    border: 4px solid #e2e8f0;
-    border-top-color: #2d3748;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid #e2e8f0;
+    border-top-color: #3182ce;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+}
+
+.ai-picker-loader p {
+    font-size: 0.875rem;
+    color: #718096;
+    margin-top: 0.5rem;
 }
 
 @keyframes spin {
@@ -115,15 +126,115 @@
     }
 }
 
-.ai-picker-result {
-    margin-top: 20px;
+/* Generated Image Area */
+.ai-picker-image-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden; /* Ensure buttons stay within the image area */
+    margin-top: 1.5rem;
     text-align: center;
+    background-color: #f9fafb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ai-picker-image {
-    max-width: 100%;
+    display: block;
+    width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 0.5rem;
+    object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Top-Right Icons */
+.ai-picker-image-icons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.ai-picker-image-icons button {
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ai-picker-image-icons button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-2px);
+}
+
+.ai-picker-image-icons button:active {
+    transform: translateY(0);
+}
+
+/* Error Message */
+.ai-picker-error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ai-picker {
+        width: 100%;
+        max-width: none;
+        padding: 1rem;
+    }
+
+    .ai-picker-actions,
+    .ai-picker-image-icons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .ai-picker-image {
+        max-width: 90%;
+    }
+}
+
+.ai-picker-generate-button {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #1a1a1a; /* Black background */
+    border: 1px solid #1a1a1a; /* Matches the border with the background */
+    border-radius: 0.5rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.ai-picker-generate-button:hover {
+    background-color: #333333; /* Slightly lighter black for hover */
+    color: #ffffff;
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+.ai-picker-generate-button:active {
+    background-color: #000000; /* Darker shade for active state */
+    transform: translateY(1px); /* Push effect */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow */
 }
 

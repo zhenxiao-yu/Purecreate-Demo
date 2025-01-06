@@ -1,128 +1,88 @@
 import React, { useState } from "react";
-import CustomButton from "../CustomButton.jsx";
-import { buttonTypes, handleSubmit, imageStyles } from "../../utils/ai-util.js";
+import { handleSubmit, imageStyles } from "../../utils/ai-util.js";
 import "./AIPicker.css";
+import {PromptInput} from "./PromptInput.jsx";
+import {StyleSelector} from "./StyleSelector.jsx";
+import {CreativitySlider} from "./CreativitySlider.jsx";
+import {AIActions} from "./Actions.jsx";
+import {Header} from "./Header.jsx";
+import {AIResult} from "./AIResult.jsx";
 
 const AIPicker = () => {
-	const [prompt, setPrompt] = useState("");
-	const [style, setStyle] = useState("default");
-	const [creativity, setCreativity] = useState(5);
+	const [form, setForm] = useState({
+		prompt: "",
+		style: "default",
+		creativity: 5,
+	});
 	const [generatingImg, setGeneratingImg] = useState(false);
-	const [generatedImage, setGeneratedImage] = useState(null); // State to store the generated image URL
+	const [generatedImage, setGeneratedImage] = useState(null);
+	const [error, setError] = useState(null);
 
-	const handleGenerate = async (type) => {
-		if (!prompt) {
-			alert("Please enter a prompt!");
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setForm((prevForm) => ({ ...prevForm, [name]: value }));
+	};
+
+	const handleGenerate = async () => {
+		if (!form.prompt.trim()) {
+			setError("Please enter a valid prompt.");
 			return;
 		}
 
 		setGeneratingImg(true);
-		setGeneratedImage(null); // Clear previous image
+		setGeneratedImage(null);
+		setError(null);
 
 		try {
-			const imageUrl = await handleSubmit(type, style, creativity, prompt, setGeneratingImg);
+			const imageUrl = await handleSubmit(
+				"generate",
+				form.style,
+				form.creativity,
+				form.prompt,
+				setGeneratingImg
+			);
 			if (imageUrl) {
-				setGeneratedImage(imageUrl); // Set the fetched image URL
+				setGeneratedImage(imageUrl);
+			} else {
+				setError("Failed to generate the image. Please try again.");
 			}
 		} catch (error) {
 			console.error("Error generating image:", error);
-			alert("Failed to generate image. Please try again.");
+			setError("An error occurred. Please try again.");
 		} finally {
 			setGeneratingImg(false);
 		}
 	};
 
+	const downloadImage = () => {
+		const link = document.createElement("a");
+		link.href = generatedImage;
+		link.download = "generated-image.png";
+		link.click();
+	};
 
 	return (
 		<div className="ai-picker">
-			{/* Header Section */}
-			<div className="ai-picker-header">
-				<h2>AI Assistant</h2>
-				<p>Enter your prompt below and let AI help create something amazing!</p>
+			<Header />
+			{error && <p className="ai-picker-error">{error}</p>}
+
+			<div className="ai-picker-form">
+				<PromptInput value={form.prompt} onChange={handleChange} />
+				<StyleSelector value={form.style} onChange={handleChange} styles={imageStyles} />
+				<CreativitySlider value={form.creativity} onChange={handleChange} />
 			</div>
 
-			{/* Prompt Input */}
-			<div className="ai-picker-section">
-				<label htmlFor="prompt" className="ai-picker-label">
-					Your Prompt
-				</label>
-				<textarea
-					id="prompt"
-					rows={5}
-					value={prompt}
-					onChange={(e) => setPrompt(e.target.value)}
-					placeholder="Ask AI..."
-					className="ai-picker-textarea"
-				/>
-			</div>
-
-			{/* Style Selector */}
-			<div className="ai-picker-section">
-				<label htmlFor="style" className="ai-picker-label">
-					Choose Style
-				</label>
-				<select
-					id="style"
-					value={style}
-					onChange={(e) => setStyle(e.target.value)}
-					className="ai-picker-select"
-				>
-					{imageStyles.map(({ value, label }) => (
-						<option key={value} value={value}>
-							{label}
-						</option>
-					))}
-				</select>
-			</div>
-
-			{/* Creativity Slider */}
-			<div className="ai-picker-section">
-				<label htmlFor="creativity" className="ai-picker-label">
-					Creativity Level
-				</label>
-				<input
-					id="creativity"
-					type="range"
-					min="1"
-					max="10"
-					value={creativity}
-					onChange={(e) => setCreativity(e.target.value)}
-					className="ai-picker-slider"
-				/>
-				<p
-					className={`ai-picker-creativity-level ${
-						creativity > 7 ? "high" : creativity < 4 ? "low" : "medium"
-					}`}
-				>
-					Level: {creativity}
-				</p>
-			</div>
-
-			{/* Action Buttons */}
-			<div className="ai-picker-actions">
-				{generatingImg ? (
-					<div className="ai-picker-loader">
-						<div className="spinner"></div>
-					</div>
-				) : (
-					buttonTypes.map(({ type, label, buttonStyle }) => (
-						<CustomButton
-							key={type}
-							type={buttonStyle}
-							title={label}
-							handleClick={() => handleGenerate(type)}
-							customStyles="ai-picker-button"
-						/>
-					))
-				)}
-			</div>
-
-			{/* Generated Image Section */}
+			<AIActions
+				generatingImg={generatingImg}
+				onGenerate={handleGenerate}
+				hasGeneratedImage={!!generatedImage}
+			/>
 			{generatedImage && (
-				<div className="ai-picker-result">
-					<h3>Generated Image:</h3>
-					<img src={generatedImage} alt="Generated by AI" className="ai-picker-image" />
-				</div>
+				<AIResult
+					image={generatedImage}
+					onRegenerate={() => setGeneratedImage(null)}
+					onDownload={downloadImage}
+				/>
 			)}
 		</div>
 	);
