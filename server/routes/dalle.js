@@ -1,7 +1,8 @@
 import express from "express";
 import OpenAI from "openai";
 import dotenv from "dotenv";
-import cors from "cors"; // Ensure cross-origin requests work
+import fetch from "node-fetch"; // Ensure you import node-fetch for backend use
+import cors from "cors";
 import { validatePrompt, validateSize } from "../utils/helper.js";
 
 dotenv.config();
@@ -14,17 +15,16 @@ if (!process.env.OPENAI_API_KEY) {
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-// Enable CORS (Optional if globally enabled)
+// Enable CORS (Optional)
 router.use(cors());
 
-// Route to generate image
 router.post("/", async (req, res) => {
     try {
         const { prompt, size = "1024x1024" } = req.body;
 
-        // Input validation
-        validatePrompt(prompt); // Ensure prompt is valid
-        validateSize(size); // Ensure size is valid (e.g., "256x256", "512x512", "1024x1024")
+        // Validate input
+        validatePrompt(prompt);
+        validateSize(size);
 
         // Generate image using OpenAI API
         const response = await openai.images.generate({ prompt, n: 1, size });
@@ -34,16 +34,22 @@ router.post("/", async (req, res) => {
             throw new Error("Failed to retrieve the generated image URL.");
         }
 
-        // Respond with the generated image URL
-        res.json({ success: true, imageUrl });
+        // Fetch the image and convert to Base64
+        const imageResponse = await fetch(imageUrl);
+        if (!imageResponse.ok) {
+            throw new Error("Failed to fetch the image from OpenAI.");
+        }
+
+        const arrayBuffer = await imageResponse.arrayBuffer();
+        const base64Image = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+
+        res.json({ success: true, base64Image });
     } catch (error) {
-        // Log full error for debugging
-        console.error("Error generating image:", error);
+        console.error("Error generating or fetching image:", error);
 
         const statusCode = error.response?.status || 500;
         const errorMessage = error.response?.data?.error?.message || error.message;
 
-        // Return error response to client
         res.status(statusCode).json({
             success: false,
             error: errorMessage,

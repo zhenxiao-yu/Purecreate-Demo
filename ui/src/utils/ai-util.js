@@ -2,6 +2,8 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
 export const handleSubmit = async (type, style, creativity, prompt, setGeneratingImg) => {
     try {
+        setGeneratingImg(true); // Show loading indicator
+
         const response = await fetch(`${BASE_URL}/image`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -13,8 +15,8 @@ export const handleSubmit = async (type, style, creativity, prompt, setGeneratin
 
         const data = await response.json();
         if (data.success) {
-            // Pass the generated image URL back to the caller
-            return data.imageUrl;
+            // Return the generated Base64 image
+            return data.base64Image;
         } else {
             alert(`Error: ${data.error || "Failed to generate image"}`);
             return null;
@@ -23,9 +25,10 @@ export const handleSubmit = async (type, style, creativity, prompt, setGeneratin
         alert(`Error: ${error.message}`);
         return null;
     } finally {
-        setGeneratingImg(false);
+        setGeneratingImg(false); // Hide loading indicator
     }
 };
+
 
 export const imageStyles = [
     { value: "default", label: "Default" },
