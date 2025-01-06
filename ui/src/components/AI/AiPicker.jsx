@@ -4,7 +4,7 @@ import "./AIPicker.css";
 import {PromptInput} from "./PromptInput.jsx";
 import {StyleSelector} from "./StyleSelector.jsx";
 import {CreativitySlider} from "./CreativitySlider.jsx";
-import {AIActions} from "./Actions.jsx";
+import {AILoader} from "./AILoader.jsx";
 import {Header} from "./Header.jsx";
 import {AIResult} from "./AIResult.jsx";
 
@@ -72,7 +72,7 @@ const AIPicker = () => {
 				<CreativitySlider value={form.creativity} onChange={handleChange} />
 			</div>
 
-			<AIActions
+			<AILoader
 				generatingImg={generatingImg}
 				onGenerate={handleGenerate}
 				hasGeneratedImage={!!generatedImage}

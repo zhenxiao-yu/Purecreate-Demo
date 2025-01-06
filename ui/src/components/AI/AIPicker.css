@@ -238,3 +238,31 @@
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow */
 }
 
+.ai-picker-custom-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.custom-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: black solid 3px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button:hover {
+    font-weight: bold;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

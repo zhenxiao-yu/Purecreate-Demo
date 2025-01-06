@@ -1,4 +1,4 @@
-export const AIActions = ({ generatingImg, onGenerate, hasGeneratedImage }) => (
+export const AILoader = ({ generatingImg, onGenerate, hasGeneratedImage }) => (
     <div className="ai-picker-actions">
         {generatingImg ? (
             <div className="ai-picker-loader">
