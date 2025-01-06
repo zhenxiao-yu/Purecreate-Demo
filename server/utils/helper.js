@@ -16,7 +16,11 @@ export function validateSize(size) {
  * @param {string} prompt - The prompt provided by the user.
  */
 export function validatePrompt(prompt) {
-    if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
-        throw new Error('Prompt is required and must be a non-empty string.');
+    if (!prompt || typeof prompt !== 'string') {
+        throw new Error('Invalid prompt: Prompt must be a non-empty string.');
+    }
+    if (prompt.length < 5 || prompt.length > 500) {
+        throw new Error('Invalid prompt: Length must be between 5 and 500 characters.');
     }
 }
+

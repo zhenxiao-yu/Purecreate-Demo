@@ -2,7 +2,7 @@ import React from 'react';
 import { useSnapshot } from 'valtio';
 
 import state from '../store';
-import { getContrastingColor } from '../config/helpers';
+import { getContrastingColor } from '../utils/helpers.js';
 
 const CustomButton = ({ type, title, customStyles, handleClick }) => {
   const snap = useSnapshot(state);

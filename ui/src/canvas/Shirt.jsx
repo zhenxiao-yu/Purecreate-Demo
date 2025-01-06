@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useSnapshot } from 'valtio';
 import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture, OrbitControls } from '@react-three/drei';
-import { createTextTexture } from '../config/helpers.js';
+import { createTextTexture } from '../utils/helpers.js';
 import { easing } from 'maath';
 import state from '../store';
 

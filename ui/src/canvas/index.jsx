@@ -7,7 +7,7 @@ import state from '../store';
 import Shirt from './Shirt';
 import Backdrop from './Backdrop';
 import CameraRig from './CameraRig';
-import { calculateFov } from '../config/helpers';
+import { calculateFov } from '../utils/helpers.js';
 
 // ErrorBoundary to catch rendering errors in the Canvas component
 class ErrorBoundary extends React.Component {

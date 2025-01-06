@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors'; // Import cors
 import dotenv from 'dotenv';
 import generateImageRoute from './routes/dalle.js';
 import healthRoute from './routes/health.js';
@@ -8,6 +9,15 @@ dotenv.config();
 
 const app = express();
 
+// Enable CORS
+const corsOptions = {
+    origin: 'http://localhost:5173', // Replace with your frontend's URL
+    methods: ['GET', 'POST'], // Allowed methods
+    allowedHeaders: ['Content-Type'], // Allowed headers
+};
+app.use(cors(corsOptions));
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {AiPicker, ColorPicker, FilePicker, TextureLogoPicker} from '../components';
 import { texturesLogos } from '../constants/texturesLogos';
-import { reader } from '../config/helpers';
+import { reader } from '../utils/helpers.js';
 import state from '../store';
 import LogoControls from "../components/LogoControls.jsx";
 import TextControls from "../components/TextControls.jsx";
