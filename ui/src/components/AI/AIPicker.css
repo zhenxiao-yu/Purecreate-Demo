@@ -6,10 +6,10 @@
     padding: 1.5rem;
     background-color: #ffffff;
     border-radius: 0.75rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.1);
     width: 22rem;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    max-width: 90vh;
+    max-height: 80vh;
     overflow-y: auto;
     opacity: 1;
 }
