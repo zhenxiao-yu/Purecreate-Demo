@@ -12,7 +12,7 @@ envCheck(['PORT', 'FRONTEND_URL']);
 const app = express();
 
 // Environment Variables
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 // Middleware
