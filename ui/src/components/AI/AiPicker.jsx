@@ -10,7 +10,7 @@ import {AIResult} from "./AIResult.jsx";
 
 const AIPicker = () => {
 	const [form, setForm] = useState({
-		prompt: "",
+		prompt: "logo for a gaming company, with a stylized joystick icon surrounded by glowing, pixelated effects",
 		style: "default",
 		creativity: 5,
 	});

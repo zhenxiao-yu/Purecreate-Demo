@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import generateImageRoute from './routes/dalle.js';
-import healthRoute from './routes/health.js';
-import miscRoute from './routes/misc.js';
+import routes from './routes/index.js'; // Centralized routes import
+import { corsConfig, envCheck } from './utils/config.js'; // Utility functions
 
 dotenv.config();
+
+// Check required environment variables
+envCheck(['PORT', 'FRONTEND_URL']);
 
 const app = express();
 
@@ -13,37 +15,26 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
-// Enable CORS with dynamic origin
-const corsOptions = {
-    origin: FRONTEND_URL, // Replace with your frontend's URL or an array for multiple origins
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
-};
-app.use(cors(corsOptions));
-
 // Middleware
+app.use(cors(corsConfig(FRONTEND_URL))); // Apply CORS configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// EJS as templating engine
 app.set('view engine', 'ejs');
 
 // Routes
-app.use('/image', generateImageRoute);
-app.use('/health', healthRoute);
-app.use('/misc', miscRoute);
+routes(app); // Register routes dynamically
 
 // Default route
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Welcome to the Image Generation API' });
+    res.send('Server is running');
 });
 
 // Centralized error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack); // Log the error
+    console.error(`[ERROR] ${err.stack}`); // Improved logging
     res.status(err.status || 500).json({
         success: false,
-        error: err.message || 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : 'Internal Server Error',
     });
 });
 

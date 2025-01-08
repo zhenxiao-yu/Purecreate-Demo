@@ -51,10 +51,3 @@ export const imageStyles = [
     { value: "retro - Nostalgic designs with muted tones and mid-20th-century aesthetics.", label: "Retro/Vintage" },
     { value: "watercolor - Soft, flowing colors with organic textures and delicate transitions.", label: "Watercolor" },
 ];
-
-
-export const buttonTypes = [
-    { type: "frontLogo", label: "Front", buttonStyle: "outline" },
-    { type: "backLogo", label: "Back", buttonStyle: "outline" },
-    { type: "texture", label: "Texture", buttonStyle: "filled" },
-];

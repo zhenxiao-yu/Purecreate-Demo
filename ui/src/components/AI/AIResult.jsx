@@ -5,7 +5,6 @@ import { DecalTypes } from "../../constants/decalTypes.js";
 export const AIResult = ({
                              image,         // Base64-encoded image string
                              onRegenerate,  // Function to regenerate the image
-                             onDownload,    // Function to download the image
                          }) => {
     const handleDecalClick = (type) => {
         if (!image) {
