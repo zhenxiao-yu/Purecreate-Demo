@@ -1,7 +1,5 @@
 # Purecreate-Demo
 
-**Purecreate-Demo** is a demonstration application showcasing the capabilities of modern web development tools and frameworks. This project focuses on providing a clean, minimalistic, and efficient web application template to kickstart your development projects.
-
 ## Features
 
 - **Customize Clothing Products:** Allows users to personalize clothing products such as t-shirts with various customization options.
