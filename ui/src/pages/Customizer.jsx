@@ -10,6 +10,7 @@ import FilterTabsContainer from './FilterTabsContainer';
 import { EditorTabs } from '../constants/editorTabs.js';
 import Navbar from '../components/Navbar.jsx';
 
+//tool tip styling
 const tooltipStyles = {
     position: 'absolute',
     transform: 'translateY(-50%)',

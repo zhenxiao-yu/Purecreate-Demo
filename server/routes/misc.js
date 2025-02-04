@@ -2,6 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
+//endpoint to show miscellaneous information about the server
 router.get('/', (req, res) => {
     res.json({
         serviceName: 'Image Generation API',
