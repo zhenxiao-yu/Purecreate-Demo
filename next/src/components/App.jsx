@@ -8,7 +8,14 @@ import AnimatedCursor from 'react-animated-cursor';
 // Three.js / r3f must run client-side only — disable SSR for the canvas
 const Canvas = dynamic(() => import('@/canvas'), {
   ssr: false,
-  loading: () => <div className="w-full h-full" />,
+  loading: () => (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="flex flex-col items-center gap-3 text-gray-400">
+        <div className="w-10 h-10 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+        <span className="text-sm tracking-wide">Loading 3D scene…</span>
+      </div>
+    </div>
+  ),
 });
 
 export default function App() {

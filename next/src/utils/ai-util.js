@@ -1,6 +1,7 @@
-export const handleSubmit = async (type, style, creativity, prompt, setGeneratingImg) => {
+export const handleSubmit = async (type, style, creativity, prompt, setGeneratingImg, setError) => {
     try {
-        setGeneratingImg(true); // Show loading indicator
+        setGeneratingImg(true);
+        if (setError) setError(null);
 
         const response = await fetch(`/api/image`, {
             method: 'POST',
@@ -13,17 +14,19 @@ export const handleSubmit = async (type, style, creativity, prompt, setGeneratin
 
         const data = await response.json();
         if (data.success) {
-            // Return the generated Base64 image
             return data.base64Image;
-        } else {
-            alert(`Error: ${data.error || "Failed to generate image"}`);
-            return null;
         }
+        const message = data.error || "Failed to generate image";
+        if (setError) setError(message);
+        else alert(`Error: ${message}`);
+        return null;
     } catch (error) {
-        alert(`Error: ${error.message}`);
+        const message = error.message || "Network error while generating image";
+        if (setError) setError(message);
+        else alert(`Error: ${message}`);
         return null;
     } finally {
-        setGeneratingImg(false); // Hide loading indicator
+        setGeneratingImg(false);
     }
 };
 

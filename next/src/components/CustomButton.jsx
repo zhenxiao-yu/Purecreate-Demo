@@ -112,16 +112,15 @@ const CustomButton = ({ type, title, customStyles, handleClick }) => {
 
 export default CustomButton;
 
-/* CSS for Ripple Animation */
-const styles = `
+/* CSS for Ripple Animation — injected once on client */
+if (typeof document !== 'undefined' && !document.getElementById('cb-ripple-styles')) {
+  const styleEl = document.createElement('style');
+  styleEl.id = 'cb-ripple-styles';
+  styleEl.textContent = `
 @keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+  to { transform: scale(4); opacity: 0; }
 }
-.ripple-effect {
-  z-index: 0;
-}
+.ripple-effect { z-index: 0; }
 `;
-document.head.insertAdjacentHTML('beforeend', `<style>${styles}</style>`);
+  document.head.appendChild(styleEl);
+}
