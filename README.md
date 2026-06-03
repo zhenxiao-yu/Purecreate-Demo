@@ -1,5 +1,7 @@
 # Purecreate – Next.js
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 Modern Next.js 15 (App Router) port of the original Vite + Express monorepo. The frontend (3D customizer) and the OpenAI image generation API now live in a single deployable app.
 
 ## Stack
@@ -92,3 +94,7 @@ This app is Vercel-ready out of the box.
 | `import.meta.env` | `process.env` (server) — frontend never reads env directly |
 | `cors` middleware | not needed |
 | `nodemon` | `next dev` HMR |
+
+## License
+
+Released under the [MIT License](LICENSE).

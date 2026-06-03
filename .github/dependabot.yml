@@ -1,0 +1,11 @@
+# Dependabot: keep npm dependencies current and patched.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      dependencies:
+        patterns: ["*"]
